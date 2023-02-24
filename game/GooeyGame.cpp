@@ -20,7 +20,7 @@ CGooeyGame::CGooeyGame(void) :
 
 	m_nCurLevel = 0;
 	m_nMaxLevel = 0;
-	m_nUnlockedLevel = 6;
+	m_nUnlockedLevel = 1;
 	m_bLevelCompleted = true;
 }
 
