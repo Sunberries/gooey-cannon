@@ -116,6 +116,101 @@ void CGooeyGame::OnUpdate()
 		// Hint: When collision detected, apply reflection. Note that you have the RESTITUTION defined as 0.8 (see line 36)
 		// Also, play sound:  m_player.Play("hit.wav");
 
+		
+
+		for (CSprite* pWall : theWalls)
+		{
+			float R = theMarble.GetWidth() / 2;
+			float X = pWall->GetWidth() / 2;
+			float Y = pWall->GetHeight() / 2;
+			float alpha = pWall->GetRotation();
+			alpha = DEG2RAD(alpha);
+
+			CVector v = theMarble.GetVelocity() * GetDeltaTime() / 1000.f;
+			CVector u = pWall->GetPos() - theMarble.GetPos();
+			CVector n = CVector(sin(alpha), cos(alpha));
+			CVector n2 = CVector(-cos(alpha), sin(alpha));
+			if (Dot(v, n) < 0)
+			{
+				// Perpendicular component (oncoming)
+				float vy = Dot(v, n); // velocity component
+				CVector d = u + (Y + R) * n; // distance vector between edges
+				float dy = Dot(d, n); // perpendicular space between
+				float f1 = dy / vy; 
+				
+				// Parallel component (breadth control)
+				float vx = Cross(v, n); // velocity component
+				float ux = Cross(u, n); // distance between centres
+				float f2 = (ux - vx * f1) / (X + R);
+
+				if (f1 >= 0 && f1 <= 1 && f2 >= -1 && f2 <= 1)
+				{
+					theMarble.SetVelocity(0.8 * Reflect(theMarble.GetVelocity(), n));
+					m_player.Play("hit.wav");
+				}
+			}
+
+			if (Dot(v, n) > 0)
+			{
+				// Perpendicular component (oncoming)
+				float vy = Dot(v, n); // velocity component
+				CVector d = u - (Y + R) * n; // distance vector between edges
+				float dy = Dot(d, n); // perpendicular space between
+				float f1 = dy / vy;
+
+				// Parallel component (breadth control)
+				float vx = Cross(v, n); // velocity component
+				float ux = Cross(u, n); // distance between centres
+				float f2 = (ux - vx * f1) / (X + R);
+
+				if (f1 >= 0 && f1 <= 1 && f2 >= -1 && f2 <= 1)
+				{
+					theMarble.SetVelocity(0.8 * Reflect(theMarble.GetVelocity(), n));
+					m_player.Play("hit.wav");
+				}
+			}
+
+			if (Dot(v, n2) < 0)
+			{
+				// Perpendicular component (oncoming)
+				float vy = Dot(v, n2); // velocity component
+				CVector d = u + (X + R) * n2; // distance vector between edges
+				float dy = Dot(d, n2); // perpendicular space between
+				float f1 = dy / vy;
+
+				// Parallel component (breadth control)
+				float vx = Cross(v, n2); // velocity component
+				float ux = Cross(u, n2); // distance between centres
+				float f2 = (ux - vx * f1) / (Y + R);
+
+				if (f1 >= 0 && f1 <= 1 && f2 >= -1 && f2 <= 1)
+				{
+					theMarble.SetVelocity(0.8 * Reflect(theMarble.GetVelocity(), n2));
+					m_player.Play("hit.wav");
+				}
+			}
+
+			if (Dot(v, n2) > 0)
+			{
+				// Perpendicular component (oncoming)
+				float vy = Dot(v, n2); // velocity component
+				CVector d = u - (X + R) * n2; // distance vector between edges
+				float dy = Dot(d, n2); // perpendicular space between
+				float f1 = dy / vy;
+
+				// Parallel component (breadth control)
+				float vx = Cross(v, n2); // velocity component
+				float ux = Cross(u, n2); // distance between centres
+				float f2 = (ux - vx * f1) / (Y + R);
+
+				if (f1 >= 0 && f1 <= 1 && f2 >= -1 && f2 <= 1)
+				{
+					theMarble.SetVelocity(0.8 * Reflect(theMarble.GetVelocity(), n2));
+					m_player.Play("hit.wav");
+				}
+			}
+		}
+
 
 	}
 
